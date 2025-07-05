@@ -1,17 +1,20 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { OrderCreatedEvent } from './shared/order.dto';
+import { OrderCreatedEvent } from '../../shared/order.dto';
+import { AppService } from './app.service';
 
 @Controller()
 export class KitchenController {
+  // Constructor can be added here if needed for dependency injection
+  constructor(private readonly appService: AppService) {}
   @MessagePattern('order_created')
   processOrder(data: OrderCreatedEvent) {
-    console.log(`[Kitchen] Processing order ID: ${data.orderId}`);
-    console.log(`[Kitchen] Order Status : ${data.product.status}`);
+    console.log(
+      `[${new Date().toISOString()}] 🍳 Memulai proses pesanan:`,
+      data.orderId,
+    );
 
-    // // update status to 'processing'
-    // data.product.status = 'processing';
-    // console.log(`[Kitchen] Updated Order Status : ${data.product.status}`);
+    void this.appService.updateStatus(data.orderId, 'progress');
 
     // Simulasi proses memasak
     return { status: 'Order processed in kitchen' };

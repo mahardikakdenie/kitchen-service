@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { OrderCreatedEvent } from '../../shared/order.dto';
+import { OrderCreatedEvent } from './shared/order.dto';
 import { AppService } from './app.service';
 
 @Controller()
